@@ -1,5 +1,6 @@
-<<<<<<< HEAD
-# Developer Productivity Platform
+# BuildFlow - Developer Productivity Platform
+
+BuildFlow is a full-stack Developer Productivity Platform built with Spring Boot and React, featuring JWT authentication, project/task management, analytics, email notifications, file uploads, and AI-powered task generation.
 
 A full-stack project and task management application for planning work, tracking
 progress, and turning project ideas into actionable tasks. The platform combines
@@ -43,7 +44,4 @@ a React web interface with a Spring Boot REST API and account-based authenticati
 
 Keep your sign-in credentials private. Check the selected project before adding
 tasks so they are associated with the intended work.
-=======
-# BuildFlow
-BuildFlow is a full-stack Developer Productivity Platform built with Spring Boot and React, featuring JWT authentication, project/task management, analytics, email notifications, file uploads, and AI-powered task generation.
->>>>>>> 67380ee5e9213e95e53968d51f7eebc37d0d42e6
+

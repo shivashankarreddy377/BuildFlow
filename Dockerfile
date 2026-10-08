@@ -3,9 +3,9 @@ FROM maven:3.9-eclipse-temurin-25 AS build
 WORKDIR /app/backend
 COPY backend/.mvn .mvn
 COPY backend/mvnw backend/pom.xml ./
-RUN chmod +x mvnw && ./mvnw -B -DskipTests dependency:go-offline
+RUN (mvn -B -DskipTests dependency:go-offline 2>/dev/null || (chmod +x mvnw 2>/dev/null && ./mvnw -B -DskipTests dependency:go-offline) || true)
 COPY backend/src src
-RUN ./mvnw -B -DskipTests package
+RUN mvn -B -DskipTests package || (chmod +x mvnw && ./mvnw -B -DskipTests package)
 
 FROM eclipse-temurin:25-jre
 
