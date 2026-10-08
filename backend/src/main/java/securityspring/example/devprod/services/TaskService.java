@@ -80,4 +80,11 @@ public class TaskService {
         taskrepo.delete(task);
     }
 
+    public Task toggleTaskStatus(int taskid){
+        Task task=taskrepo.findById(taskid).orElseThrow(()->new TaskNotfound("task not found: "+taskid));
+        String username= SecurityContextHolder.getContext().getAuthentication().getName();
+        if(!username.equals(task.getProj().getUser().getUsername()))throw new UnAuthorizedexception("this task is not yours");
+        task.setStatus(!task.isStatus());
+        return taskrepo.save(task);
+    }
 }

@@ -41,4 +41,13 @@ public class UserService {
          User user=userrepo.findById(user_id).orElseThrow(()->new UserNotfound("user not found "+user_id));
          userrepo.deleteById(user_id);
      }
+
+     public User getCurrentUser(){
+         String username = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
+         User user = userrepo.findByUsername(username);
+         if (user != null) {
+             user.setPassword(null);
+         }
+         return user;
+     }
 }

@@ -25,11 +25,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
+     http.cors(org.springframework.security.config.Customizer.withDefaults());
      http.csrf(csrf->csrf.disable());
      http.authorizeHttpRequests(request->request
              .requestMatchers("/login","/register",
                      "/swagger-ui/**",
-                     "/v3/api-docs/**").permitAll()
+                     "/v3/api-docs/**",
+                     "/error").permitAll()
              .anyRequest().authenticated());
      http.httpBasic(httpbasic->httpbasic.disable());
      http.sessionManagement(session->session

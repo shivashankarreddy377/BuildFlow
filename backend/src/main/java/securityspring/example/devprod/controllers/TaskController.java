@@ -23,11 +23,15 @@ public class TaskController {
      return  taskService.taskbyid(task_id);
     }
     @PostMapping("user/project/{proj_id}/task")
-    public void createTask(@RequestBody TaskRequest taskRequest, @PathVariable int proj_id){
-             taskService.createtask(taskRequest,proj_id);
+    public Task createTask(@RequestBody TaskRequest taskRequest, @PathVariable int proj_id){
+        return taskService.createtask(taskRequest,proj_id);
+    }
+    @PatchMapping("user/project/task/{task_id}/toggle-status")
+    public Task toggleTaskStatus(@PathVariable int task_id){
+        return taskService.toggleTaskStatus(task_id);
     }
     @DeleteMapping("user/project/task/{task_id}")
     public void Deltetaskbyid(@PathVariable int task_id){
-    taskService.DeleteTask(task_id);
+        taskService.DeleteTask(task_id);
     }
 }

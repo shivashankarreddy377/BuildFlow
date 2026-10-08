@@ -26,6 +26,10 @@ public class UserController {
 
         return userService.Login(userRequest);
     }
+    @GetMapping("/user/me")
+    public User getCurrentUser(){
+        return userService.getCurrentUser();
+    }
     @DeleteMapping("/Delete/{user_id}")
     public void deletetheuser(@PathVariable int user_id){
          userService.deleteUser(user_id);

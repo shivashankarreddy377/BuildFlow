@@ -37,6 +37,7 @@ public class ProjectService {
     private Projectrepo projectrepo;
     @Autowired
     private Userrepo userrepo;
+    @Autowired
     private EmailService emailService;
 
     public Project createproject( ProjectRequest projectRequest){
@@ -57,7 +58,7 @@ public class ProjectService {
     public Page<Project> projectsofuser(int page,int size){
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
         User user=userrepo.findByUsername(username);
-        Pageable pageable= PageRequest.of(page,size,Sort.by("due_date"));
+        Pageable pageable= PageRequest.of(page,size,Sort.by(Sort.Direction.DESC, "id"));
         return projectrepo.findByUser(user,pageable);
     }
     @Cacheable(value = "projects",key="#proj_id")
@@ -75,18 +76,29 @@ public class ProjectService {
         projectrepo.delete(project);
     }
     public Page<Project> findbyserandtitle(int page,int size,String title,Boolean status){
-        Pageable pageable=PageRequest.of(page,size,Sort.by("due_date"));
+        Pageable pageable=PageRequest.of(page,size,Sort.by(Sort.Direction.DESC, "id"));
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
         User user=userrepo.findByUsername(username);
         Specification<Project>spec=Specification.where(ProjectSpecification.hasUser(user));
         if(status!=null){
             spec=spec.and(ProjectSpecification.hasStatus(status));
         }
-        if(title!=null){
-            spec=spec.and(ProjectSpecification.hasTitle(title));
+        if(title!=null && !title.trim().isEmpty()){
+            spec=spec.and(ProjectSpecification.hasTitle(title.trim()));
         }
 
         return projectrepo.findAll(spec,pageable);
+    }
+
+    public Project toggleStatus(int proj_id) {
+        Project project = projectrepo.findById(proj_id)
+                .orElseThrow(() -> new ProjNotFound("Project not found: " + proj_id));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!username.equals(project.getUser().getUsername())) {
+            throw new UnAuthorizedexception("This project does not belong to you");
+        }
+        project.setStatus(!project.isStatus());
+        return projectrepo.save(project);
     }
 
     public Resource getFile(int projectId) throws MalformedURLException, MalformedURLException {

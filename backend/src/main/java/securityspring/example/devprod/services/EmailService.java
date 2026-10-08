@@ -16,23 +16,24 @@ public class EmailService {
             String to,
             String projectTitle) {
 
-        SimpleMailMessage message =
-                new SimpleMailMessage();
+        if (to == null || to.trim().isEmpty()) {
+            return;
+        }
 
-        message.setTo(to);
-        message.setSubject("Project Created");
-
-        message.setText(
-                "Project '" + projectTitle +
-                        "' was created successfully."
-        );
         try {
+            SimpleMailMessage message =
+                    new SimpleMailMessage();
+
+            message.setTo(to);
+            message.setSubject("Project Created");
+
+            message.setText(
+                    "Project '" + projectTitle +
+                            "' was created successfully."
+            );
             mailSender.send(message);
+        } catch (Exception e) {
+            System.err.println("Notice: Project created but email notification could not be sent: " + e.getMessage());
         }
-        catch (Exception e){
-            throw new MailSendException("unable to send email");
-        }
-
-
     }
 }
