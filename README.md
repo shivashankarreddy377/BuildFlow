@@ -1,55 +1,22 @@
 # Developer Productivity Platform
 
-This repository contains the Spring Boot backend and the React/Vite frontend.
+Developer Productivity Platform is a web app for organizing projects and their
+tasks in one place. It includes a dashboard with project summaries and progress,
+project and task management, and an AI task planner that can turn a project idea
+into suggested work items.
 
-## Run the backend
+## Using the web app
 
-From the repository root, run:
+1. Open the website and create an account, or sign in.
+2. Use **Dashboard** to review your project totals and recent activity.
+3. Open **Projects** to create a project. Add a title and description, and
+   optionally set a due date or attach a file.
+4. Select a project and use **Tasks** to add and manage its work items. Mark
+   projects and tasks complete as work progresses; use the search and status
+   filters to find items.
+5. Use **AI Task Planner** to enter a project idea and generate task suggestions.
+   Select a project before adding a suggested task to its task list.
+6. Sign out when you have finished using the app.
 
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-The backend listens on `http://localhost:8080` by default.
-
-## Run the frontend
-
-In a second terminal, run:
-
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
-The frontend uses `http://localhost:8080` as its default API URL. To use another
-backend URL, set `VITE_API_BASE_URL` in `frontend/.env.local` before starting Vite.
-For example:
-
-```text
-VITE_API_BASE_URL=https://your-backend.example.com
-```
-
-## Deploy to Render
-
-The root `render.yaml` defines a free Spring Boot web service and a free static
-frontend. Connect this repository to Render and create a Blueprint from
-`render.yaml`.
-
-The backend requires an externally hosted MySQL database. In the Blueprint setup,
-provide these backend environment variables using the database provider's remote
-connection details:
-
-- `SPRING_DATASOURCE_URL` (JDBC URL, such as
-  `jdbc:mysql://HOST:3306/DATABASE?useSSL=true`)
-- `SPRING_DATASOURCE_USERNAME`
-- `SPRING_DATASOURCE_PASSWORD`
-
-Do not use `localhost` for a hosted database. The frontend API URL is wired to
-the backend by the Blueprint. Set `APP_CORS_ALLOWED_ORIGIN` to the frontend's
-exact Render URL (including `https://`) in the backend environment.
-`SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD`, and `GEMINI_API_KEY` can also be
-set in the backend environment if email and AI features are needed.
-
-Free backend instances can spin down when idle, and local uploads are temporary.
-Uploaded attachments can be lost when the service restarts or redeploys.
+Keep your sign-in details private. Project and task information belongs to your
+account; verify the selected project before creating or completing tasks.
