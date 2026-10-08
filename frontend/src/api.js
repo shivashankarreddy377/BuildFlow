@@ -1,5 +1,8 @@
 // API Client for Developer Workshop DevProd Application
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const configuredApiBase = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = configuredApiBase
+  ? (configuredApiBase.startsWith('http') ? configuredApiBase : `https://${configuredApiBase}`)
+  : 'http://localhost:8080';
 
 const TOKEN_KEY = 'devprod_auth_token';
 

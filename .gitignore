@@ -38,3 +38,7 @@ frontend/dist/
 frontend/.env*
 !frontend/.env.example
 
+### Local configuration and uploads ###
+/.env*
+!/.env.example
+/uploads/
