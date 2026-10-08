@@ -2,12 +2,12 @@
 .git
 
 # IDE settings
-.idea
+backend/.idea
 .vscode
 
 # Build output and runtime data
-target
-uploads
+backend/target
+backend/uploads
 
 # The backend image does not need frontend sources
 frontend/

@@ -1,6 +1,6 @@
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
+backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -22,7 +22,7 @@ target/
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
-/dist/
+/frontend/dist/
 /nbdist/
 /.nb-gradle/
 build/
@@ -41,4 +41,4 @@ frontend/.env*
 ### Local configuration and uploads ###
 /.env*
 !/.env.example
-/uploads/
+/backend/uploads/
