@@ -1,21 +1,21 @@
 // API Client for Developer Workshop DevProd Application
 const configuredApiBase = import.meta.env.VITE_API_BASE_URL;
 export function getApiBase() {
-  // 1. If running in browser on Render, derive backend directly from frontend origin
+  // 1. Prefer the API host injected by the deployment configuration.
+  let base = (configuredApiBase || '').trim();
+  if (base && !base.includes('localhost')) {
+    if (!base.startsWith('http')) {
+      base = base.includes('.') ? `https://${base}` : `https://${base}.onrender.com`;
+    }
+    return base.replace(/\/+$/, '');
+  }
+
+  // 2. If running on Render without an explicit API host, infer it from the frontend origin.
   if (typeof window !== 'undefined' && window.location) {
     const { hostname, origin } = window.location;
     if (hostname.includes('onrender.com')) {
       return origin.replace('developer-productivity-frontend', 'developer-productivity-api');
     }
-  }
-
-  // 2. If configuredApiBase is set
-  let base = (configuredApiBase || '').trim();
-  if (base && !base.includes('localhost')) {
-    if (!base.includes('.')) {
-      base = `${base}.onrender.com`;
-    }
-    return base.startsWith('http') ? base : `https://${base}`;
   }
 
   return 'http://localhost:8080';
