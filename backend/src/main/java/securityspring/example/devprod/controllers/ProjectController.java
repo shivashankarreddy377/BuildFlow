@@ -47,13 +47,16 @@ public class ProjectController {
         return project;
     }
     @PostMapping(value="user/project",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Project createproject(@RequestPart ProjectRequest projectRequest, @RequestParam MultipartFile file) throws IOException {
-        Path uploadPath = Paths.get(uploadDirectory);
-        Files.createDirectories(uploadPath);
-        String filename=System.currentTimeMillis()+"_"+file.getOriginalFilename();
-        Path path= uploadPath.resolve(filename);
-        Files.copy(file.getInputStream(),path);
-        projectRequest.setFilename(filename);
+    public Project createproject(@RequestPart ProjectRequest projectRequest,
+                                 @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            Path uploadPath = Paths.get(uploadDirectory);
+            Files.createDirectories(uploadPath);
+            String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path path = uploadPath.resolve(filename);
+            Files.copy(file.getInputStream(), path);
+            projectRequest.setFilename(filename);
+        }
         return projectService.createproject(projectRequest);
     }
     @DeleteMapping("project/{projectId}")

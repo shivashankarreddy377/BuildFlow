@@ -11,18 +11,14 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig {
-    @Value("${app.cors.allowed-origin:http://localhost:5173}")
-    private String allowedOrigin;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        String origin = allowedOrigin.startsWith("http")
-                ? allowedOrigin
-                : "https://" + allowedOrigin;
-        configuration.setAllowedOrigins(List.of(origin));
+        configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
