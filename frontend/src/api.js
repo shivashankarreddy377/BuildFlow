@@ -1,8 +1,23 @@
 // API Client for Developer Workshop DevProd Application
 const configuredApiBase = import.meta.env.VITE_API_BASE_URL;
-const API_BASE = configuredApiBase
-  ? (configuredApiBase.startsWith('http') ? configuredApiBase : `https://${configuredApiBase}`)
-  : 'http://localhost:8080';
+export function getApiBase() {
+  if (configuredApiBase && !configuredApiBase.includes('localhost')) {
+    return configuredApiBase.startsWith('http')
+      ? configuredApiBase
+      : `https://${configuredApiBase}`;
+  }
+
+  if (typeof window !== 'undefined' && window.location) {
+    const { hostname, origin } = window.location;
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+      if (hostname.includes('onrender.com')) {
+        return origin.replace('developer-productivity-frontend', 'developer-productivity-api');
+      }
+    }
+  }
+
+  return 'http://localhost:8080';
+}
 
 const TOKEN_KEY = 'devprod_auth_token';
 
@@ -32,7 +47,7 @@ export async function apiRequest(path, options = {}) {
     ...(options.headers || {}),
   };
 
-  const response = await fetch(`${API_BASE}${path}`, {
+  const response = await fetch(`${getApiBase()}${path}`, {
     ...options,
     headers,
   });
@@ -126,7 +141,7 @@ export async function createProject({ title, description, dueDate, file }) {
   }
 
   const token = getStoredToken();
-  const response = await fetch(`${API_BASE}/user/project`, {
+  const response = await fetch(`${getApiBase()}/user/project`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -164,7 +179,7 @@ export async function deleteProject(projectId) {
 
 export async function downloadProjectFile(projectId, filename = 'download') {
   const token = getStoredToken();
-  const res = await fetch(`${API_BASE}/project/${projectId}/file`, {
+  const res = await fetch(`${getApiBase()}/project/${projectId}/file`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
